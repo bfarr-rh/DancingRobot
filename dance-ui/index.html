@@ -1,0 +1,290 @@
+
+
+
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <link rel="stylesheet" href="jquery-ui-1.12.1/jquery-ui.min.css">
+        <link rel="stylesheet" href="dance.css"/>
+        <script src="envvars.js"></script>
+        <script src="jquery-ui-1.12.1/external/jquery/jquery.js"></script>
+        <script src="jquery-ui-1.12.1/jquery-ui.min.js"></script>
+        <script src="p5.min.js"></script>
+        <script src="p5.dom.min.js"></script>
+        <script src="p5.sound.min.js"></script>
+        <script src="sketch.js"></script>
+    </head>
+
+	<body >
+        <div style="width:100%; margin-left:20px">
+                <img src="images/Logo-RedHat-A-Color-RGB.svg" width="216" height="52" style="width: 162px; height: 39px; position: absolute; left: 20px; top: 5px;">
+            <div align="center">
+                <h1>TRAIN OUR ROBOT TO DANCE! </h1>
+            </div>
+        </div>
+        <div style="width:100%">
+            <div style="float: left;margin-left:10px;">
+                <div>
+                    <label class="lbl">1. Play a Song:</label><select id="song" >
+                        <option value="YouShookMeAllNightLong.m4a">You Shook Me All Night Long</option>
+                        <option value="UptownFunk.m4a">Uptown Funk</option>
+                        <option value="HighRatedGabruRemix.m4a">High Rated Gabru Remix </option>
+                        <option value="IceIceBaby.m4a">Ice Ice Baby</option></select>
+                    <br/>
+                    <br/>
+                </div>
+                <div class="row">
+                    <p class="lbl" >2. Build a Dance Routine (>15 moves)!</p>
+                </div>
+                
+                <div class="table" >
+                        <div class="row">
+                                <div class="cell1" style="vertical-align: top"><button id="spinleft" class="spinleftbtn ui-button ui-widget ui-corner-all">SPIN LEFT!</button></div>
+                                <div ></div>
+                                <div class="cell3" style="vertical-align: top"><button id="spinright" class="spinrightbtn ui-button ui-widget ui-corner-all">SPIN RIGHT!</button> </div>
+                        </div>
+                        <div class="row">
+                                <div ></div>
+                            <div class="cell2"><img id="imgup" src="images/arrow-up.png" class="arrow-vert"/></div>
+                            <div ></div>
+                        </div>
+                        <div class="row">
+                            <div class="cell1"><img id="imgleft" src="images/arrow-left.png" class="arrow"/></div>
+                            <div>
+                            </div>
+                            <div class="cell3"><img id="imgright" src="images/arrow-right.png" class="arrow"/></div>
+                        </div>
+                        <div class="row">
+                            <div ></div>
+                            <div class="cell2"><img id="imgdown" src="images/arrow-down.png" class="arrow-vert"/></div>
+                            <div ></div>
+                        </div>
+                        
+                </div>
+            </div>
+            <div style="width:500px;height:580px;float: right;margin-right:10px;">
+                    <div id="sketch-holder" style="width:500px;height: 240px"></div>
+                    <div style="margin-top: 30px;">
+                        <div  align="center">
+                            <p align="center" class="lbl">Your Dance Moves </p>
+                            <div id="ydm" style="width:380px;height: 200px"></div>
+                            <button style="margin-top:5px" id="clearyourmoves" class="ui-button ui-widget ui-corner-all">Clear</button>
+                            <textarea id="stepsBox" rows="15" cols="60" style="display: none;"></textarea>
+                        </div>
+                    </div>
+            </div>
+            <div style="float: left;margin-left:10px;">
+                <p class="lbl" >3. Train the Model and let ML control moves!</p>
+                <div align="center">
+                    <button id="trainData" class="trainbtn" disabled>TRAIN THE MODEL!</button>
+                </div>
+                <div align="center">
+                    <br/><br/><br/><br/>
+                    <button id = "settingsbutton">Settings</button>
+                </div>
+                <br/>
+            </div>
+            <div style="width:500px; float: right;margin-right:10px;">
+                <div  align="center">
+                        <p  align="center" class="lbl" >ML Dance Moves</p>
+                        <div id="mldm" style="width:380px;height: 200px"></div>
+                        <button id="clearmlmoves" style="margin-top:5px" class="ui-button ui-widget ui-corner-all">Clear</button>
+                        <div><p>Hits: <label id="hitsvalue">0</label> Misses: <label id="missesvalue">0</label></div>
+                        <textarea id="fftBox" rows="15" cols="60" style="display: none;"></textarea>
+                </div>
+            </div>
+            <div id="dialog-params" title = "Settings" style="width:400px;">
+                <div><label  class="lbl">Robot: </label><input id="robot_name" size="20" class="lbl" value="MOE"/></div>
+                <div><label  class="lbl">Speed: </label><input id="speed" type="text" size="3" value="80" class="lbl"/><div id="speed_slider"></div></div>
+                <div><label  class="lbl">Turn Speed: </label><input id="turnspeed" type="text" size="3" value="90" class="lbl"/><div id="turnspeed_slider"></div></div>
+                <div><label  class="lbl">Move Delay: </label><input id="delayms" type="text" size="5" value="100" class="lbl"/><div id="movedelay_slider"></div></div>
+                <div><label  class="lbl">Sampling Rate:</label><input id="sampllingrate" type="text" size="5" value="30" class="lbl"/><div id="samplerate_slider"></div></div>
+                <div><label  class="lbl">Send To Robot: </label><div class="switch-wrapper"><input id="send_commands_to_robot_checkbox" type="checkbox" value="0" > </div></div>
+                <br/>
+                <div><label class="lbl">Model Name:</label><input id="experimentid" class="lbl" type="text" size="15"/></div>
+                <div><br/><button id="saveModel" class="ui-button ui-widget ui-corner-all" >SAVE MODEL</button><button id="loadModel" class="ui-button ui-widget ui-corner-all" >LOAD MODEL</button></div>
+                <div><label  class="lbl">Predict Mode: </label><div class="switch-wrapper"><input id="predictmode_checkbox" type="checkbox" value="0" > </div></div>
+            </div>
+            
+        </div>
+
+        <script>
+            function refreshSpeed() {
+                $('#speed').val($( "#speed_slider" ).slider( "value" ));
+            }
+            function refreshTurnSpeed() {
+                $('#turnspeed').val($( "#turnspeed_slider" ).slider( "value" ));
+            }
+            function refreshMoveDelay() {
+                $('#delayms').val($( "#movedelay_slider" ).slider( "value" ));
+            }
+            function refreshSampleRate() {
+                $('#sampllingrate').val($( "#samplerate_slider" ).slider( "value" ));
+            }
+            
+            
+            $(function() {
+                $( "#movedelay_slider" ).slider({
+                    orientation: "horizontal",
+                    range: "min",
+                    max: 1000,
+                    value: 100,
+                    slide: refreshMoveDelay,
+                    change: refreshMoveDelay
+                });
+                $( "#samplerate_slider" ).slider({
+                    orientation: "horizontal",
+                    range: "min",
+                    max: 150,
+                    value: 30,
+                    slide: refreshSampleRate,
+                    change: refreshSampleRate
+                });
+
+                $( "#speed_slider" ).slider({
+                    orientation: "horizontal",
+                    range: "min",
+                    max: 99,
+                    value: 80,
+                    slide: refreshSpeed,
+                    change: refreshSpeed
+                });
+                $( "#turnspeed_slider" ).slider({
+                    orientation: "horizontal",
+                    range: "min",
+                    max: 99,
+                    value: 90,
+                    slide: refreshTurnSpeed,
+                    change: refreshTurnSpeed
+                });
+                $( "#dialog-params" ).dialog({
+                      autoOpen: false, 
+                      modal: true,
+                      width: 550,
+                      buttons: {
+                         OK: function() {$(this).dialog("close");}
+                      },
+                   });
+                   $( "#settingsbutton" ).click(function() {
+                      $( "#dialog-params" ).dialog( "open" );
+                   });
+
+                $('#clearyourmoves').click(function() {
+                    resetLines()
+                });
+                $('#clearmlmoves').click(function() {
+                    resetMLLines()
+                });
+                $("#song").change(function() {
+                    myp5.changeSong($("#song").val());
+                });
+                
+                $("#send_commands_to_robot_checkbox").change(function() {
+                    if ($("#send_commands_to_robot_checkbox").is(':checked')) {
+                        send_commands_to_robot = 1;
+                    } else {
+                        send_commands_to_robot = 0;
+                    }
+                    alert("Sending comands to robot:" + send_commands_to_robot);
+                });
+                
+                
+                $("#predictmode_checkbox").change(function() {
+                    if ($("#predictmode_checkbox").is(':checked')) {
+                        predict_mode = 1;
+                    } else {
+                        predict_mode = 0;
+                    }
+                    alert("Predict mode:" + predict_mode);
+                });
+                $("#sampllingrate").change(function() {
+                    sampling_rate = $("#sampllingrate").val();
+                });
+                
+
+                $("#params").hide();
+                $("#extraparams").click(function() {
+                    if ($("#params").is(":visible")) {
+                        $("#params").hide();
+                        $("#extraparams").html("+");
+                    } else {
+                        $("#params").show();
+                        $("#extraparams").html("-");
+                    }
+                   
+                });
+                $("#loadModel").click(function(){
+                    loadModel();
+                });
+                $("#saveModel").click(function(){
+                    saveModel();
+                });
+                
+
+                
+                $("#stepsBox").change(function() {
+                    $('#trainData').prop('disabled', $('#stepsBox').val().length < 1125)
+                    // Enable after approx 15 moves
+                });
+
+                $("#trainData").click(function(){
+                    trainData();
+                });
+                $("#predictData").click(function(){
+                    predict();
+                });
+                $("#spinleft").click(function(){
+                    var fft = getcurrentfft();
+                    if (fft != '') {
+                        $('#stepsBox').val( $('#stepsBox').val() + fft + ",-360\r"); 
+                        $("#stepsBox").change();
+                        addMove(0,0,-1);
+                    }
+                    
+                });
+                $("#spinright").click(function(){
+                    var fft = getcurrentfft();
+                    if (fft != '') {
+                        $('#stepsBox').val( $('#stepsBox').val() + fft + ",360\r"); 
+                        $("#stepsBox").change();
+                        addMove(0,0,1);
+                    }
+                });
+                $("#imgup").click(function(){
+                    var fft = getcurrentfft();
+                    if (fft != '') {
+                        $('#stepsBox').val( $('#stepsBox').val() + fft + ",180\r"); 
+                        $("#stepsBox").change();
+                        addMove(0,-35,0);
+                    }
+                });
+                $("#imgleft").click(function(){
+                    var fft = getcurrentfft();
+                    if (fft != '') {
+                        $('#stepsBox').val( $('#stepsBox').val() + fft + ",-90\r"); 
+                        $("#stepsBox").change();
+                        addMove(-35,0,0);
+                    }
+                });
+                $("#imgright").click(function(){
+                    var fft = getcurrentfft();
+                    if (fft != '') {
+                        $('#stepsBox').val( $('#stepsBox').val() + fft + ",90\r"); 
+                        $("#stepsBox").change();
+                        addMove(35,0,0);
+                    }
+                });
+                $("#imgdown").click(function(){
+                    var fft = getcurrentfft();
+                    if (fft != '') {
+                        $('#stepsBox').val( $('#stepsBox').val() + fft + ",-180\r");
+                        $("#stepsBox").change();
+                        addMove(0,35,0);
+                    } 
+                });
+            });
+            
+        </script>
+
+	</body>
+</html>

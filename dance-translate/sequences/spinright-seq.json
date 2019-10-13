@@ -1,0 +1,11 @@
+[
+{
+    "robotName": "P_NAME",
+    "cmdString": "spinRight"
+}
+,
+{
+    "robotName": "P_NAME",
+    "cmdString": "stop"
+}
+    ]

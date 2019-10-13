@@ -1,0 +1,19 @@
+[
+{
+    "robotName": "P_NAME",
+    "cmdString": "speed P_SPEED"
+}
+,
+{
+    "robotName": "P_NAME",
+    "cmdString": "backward"
+}
+,
+{
+    "delay": "P_DELAY"
+},
+{
+    "robotName": "P_NAME",
+    "cmdString": "stop"
+}
+]

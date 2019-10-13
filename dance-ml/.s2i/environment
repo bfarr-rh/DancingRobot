@@ -1,0 +1,3 @@
+APP_FILE=train.py
+MLFLOW_TRACKING_URI=http://zak-tracking-server-svc:5000
+

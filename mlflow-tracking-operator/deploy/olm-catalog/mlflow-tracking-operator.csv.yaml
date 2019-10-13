@@ -1,0 +1,166 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  creationTimestamp: null
+  name: mlflow-tracking-operator.v0.1.0
+  namespace: mlflow-olm
+  annotations:
+    categories: "MLFlow - Model Lifecycle Management"
+    certified: "false"
+    containerImage: quay.io/zmhassan/mlflow-tracking-operator
+    capabilities: Seamless Upgrades
+    support: Mlflow
+    description: Provides hyperparameter tooling and model lifecycle management for machine learning jobs
+    alm-examples: |-
+      apiVersion: ai.mlflow.org/v1alpha1
+      kind: TrackingServer
+      metadata:
+        name: zak-tracking-server
+      spec:
+        # Add fields here
+        size: 2
+        Image: "quay.io/zmhassan/mlflow:0.8.2"
+
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - kind: TrackingServer
+      name: trackingservers.ai.mlflow.org
+      version: v1alpha1
+      description: MLFlow Tracking Server for experiment tracking of machine learning jobs
+      displayName:  Mlflow Tracking Operator
+      resources:
+        - kind: Service
+          version: v1
+        - kind: Pod
+          version: v1
+      specDescriptors:
+        - description: Aws Secret Credentials for MLFlow
+          displayName: AWS_CRED_SECRET
+          path: aws_cred_secret
+          x-descriptors:
+            - 'urn:alm:descriptor:io.kubernetes:core:v1:Secret'
+        - description: S3 Endpoint option
+          displayName: S3_ENDPOINT_URL
+          path: s3_endpoint_url
+          x-descriptors:
+            - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - description: MLFlow Image Version
+          displayName: Image
+          path: image
+          x-descriptors:
+            - 'urn:alm:descriptor:com.tectonic.ui:text'
+        - description: Cluster Size
+          displayName: Size
+          path: size
+          x-descriptors:
+            - 'urn:alm:descriptor:com.tectonic.ui:label'
+
+
+  description: MLFlow Tracking Server for experiment tracking of machine learning jobs
+  displayName: Mlflow Tracking Server
+  keywords: ['mlflow', 'hyperparameter-tuning', 'machine-learning']
+  maintainers:
+    - name: Zak Hassan
+      email: zak.hassan@redhat.com
+  links:
+    - name: MLFlow Source Code
+      url: https://github.com/zmhassan/mlflow-tracking-operator
+  installModes:
+    - type: OwnNamespace
+      supported: true
+    - type: SingleNamespace
+      supported: true
+    - type: MultiNamespace
+      supported: false
+    - type: AllNamespaces
+      supported: true
+  install:
+    spec:
+      deployments:
+      - name: mlflow-tracking-operator
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              name: mlflow-tracking-operator
+          strategy: {}
+          template:
+            metadata:
+              creationTimestamp: null
+              labels:
+                name: mlflow-tracking-operator
+            spec:
+              containers:
+              - command:
+                - mlflow-tracking-operator
+                env:
+                - name: WATCH_NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+                - name: POD_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                - name: OPERATOR_NAME
+                  value: mlflow-tracking-operator
+                image: quay.io/zmhassan/mlflow-tracking-operator@sha256:817825f0da7499de0a15f3bbfe889eac8317f73d35881195a8ea2d4fb720d270
+                imagePullPolicy: Always
+                name: mlflow-tracking-operator
+                resources: {}
+              serviceAccountName: mlflow-tracking-operator
+      permissions:
+      - rules:
+        - apiGroups:
+          - ""
+          resources:
+          - pods
+          - services
+          - endpoints
+          - persistentvolumeclaims
+          - events
+          - configmaps
+          - secrets
+          verbs:
+          - '*'
+        - apiGroups:
+          - ""
+          resources:
+          - namespaces
+          verbs:
+          - get
+        - apiGroups:
+          - apps
+          resources:
+          - deployments
+          - daemonsets
+          - replicasets
+          - statefulsets
+          verbs:
+          - '*'
+        - apiGroups:
+          - monitoring.coreos.com
+          resources:
+          - servicemonitors
+          verbs:
+          - get
+          - create
+        - apiGroups:
+          - ai.mlflow.org
+          resources:
+          - '*'
+          verbs:
+          - '*'
+        serviceAccountName: mlflow-tracking-operator
+    strategy: deployment
+  maturity: alpha
+  provider:
+    name: AICoE
+  labels:
+    name: mlflow-tracking-operator
+  selector:
+    matchLabels:
+      name: mlflow-tracking-operator
+  version: 0.1.0

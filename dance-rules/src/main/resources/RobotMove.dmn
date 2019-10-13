@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="https://kiegroup.org/dmn/_BCCC9FE7-B675-4413-9DB7-9AC9C40404A6" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_12AFE31B-620C-40CF-A352-947911E97761" name="RobotMove" expressionLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="https://kiegroup.org/dmn/_BCCC9FE7-B675-4413-9DB7-9AC9C40404A6">
+  <dmn:extensionElements/>
+  <dmn:decision id="_5C432F96-0204-4B47-828A-60E6A42F56FA" name="RobotMove">
+    <dmn:variable id="_5250D552-ABE9-4747-ACF0-BE6416E51C04" name="RobotMove" typeRef="string"/>
+    <dmn:informationRequirement id="_663881F6-74AE-4EBC-9135-323C91866211">
+      <dmn:requiredInput href="#_B3B1C2E3-F0BC-4088-B7D5-3AA484D57383"/>
+    </dmn:informationRequirement>
+    <dmn:decisionTable id="_7A995E4A-CF0A-46F2-8C07-79E1ADB53892" hitPolicy="UNIQUE" preferredOrientation="Rule-as-Row">
+      <dmn:input id="_2A5625E1-AAF5-4571-BA6C-2CE346846236">
+        <dmn:inputExpression id="_066D09BE-C35A-45C1-A934-9077812EB65F" typeRef="number">
+          <dmn:text>moveValue</dmn:text>
+        </dmn:inputExpression>
+      </dmn:input>
+      <dmn:output id="_161FF3E2-E40E-4742-BC45-6BFC55BFD063" typeRef="string"/>
+      <dmn:rule id="_A381FB39-218C-4D49-8685-7204145DB283">
+        <dmn:description>Nominated value is -360, tolerance of 30%</dmn:description>
+        <dmn:inputEntry id="_B35D1782-CF30-4D8E-BF5D-813AC98CE5BC">
+          <dmn:text>[-465 .. -250]</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="_2849961D-4AD9-45FB-9BF1-94CF20118474">
+          <dmn:text>"spinleft"</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule id="_56E5D4CE-A8F3-43EE-99F5-6A838B5925AF">
+        <dmn:description>Nominated value is 360, tolerance of 30%</dmn:description>
+        <dmn:inputEntry id="_A8D28513-1F00-4D05-8B80-B3E3CE186545">
+          <dmn:text>[250 .. 465]</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="_E01363E6-FE90-48F3-AD63-C2613C36ECE9">
+          <dmn:text>"spinright"</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule id="_32DE8D81-DB1A-4E3B-A5CA-ACDFF53DC952">
+        <dmn:description>Nominated value is -90, tolerance of 30%</dmn:description>
+        <dmn:inputEntry id="_30B7B985-1F1B-480B-9549-A66C2FD4436E">
+          <dmn:text>[-115 .. -65]</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="_6881CDC3-FF41-4615-BD30-4CDA95AF83EF">
+          <dmn:text>"left"</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule id="_429AF3F8-3365-4797-BC72-F981DCC823F1">
+        <dmn:description>Nominated value is 90, tolerance of 30%</dmn:description>
+        <dmn:inputEntry id="_F3291C9C-4901-4773-BBA0-AF712AC13954">
+          <dmn:text>[65 .. 115]</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="_E350F6DE-2B38-4ADA-8C83-8DADFD1A1D89">
+          <dmn:text>"right"</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule id="_3142C34A-6764-4007-998F-5E8A6076CB03">
+        <dmn:description>Nominated value is 180, tolerance of 30%</dmn:description>
+        <dmn:inputEntry id="_D28BBB94-95E7-4A6D-81F9-5391DD02C87E">
+          <dmn:text>[130 .. 230]</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="_1D91E85A-5E46-462A-BDC7-3AF6F5B76319">
+          <dmn:text>"up"</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+      <dmn:rule id="_9E782CBC-680C-404F-814C-2BBAC96B8F45">
+        <dmn:description>Nominated value is -180, tolerance of 30%</dmn:description>
+        <dmn:inputEntry id="_883D451F-CF78-4F35-BB2F-C8673A5657C2">
+          <dmn:text>[-230 .. -130]</dmn:text>
+        </dmn:inputEntry>
+        <dmn:outputEntry id="_C55B4963-221B-47AC-836A-113278F83FCC">
+          <dmn:text>"down"</dmn:text>
+        </dmn:outputEntry>
+      </dmn:rule>
+    </dmn:decisionTable>
+  </dmn:decision>
+  <dmn:inputData id="_B3B1C2E3-F0BC-4088-B7D5-3AA484D57383" name="moveValue">
+    <dmn:variable id="_A324DC5A-B9AE-40F0-BF56-660FF97F7C26" name="moveValue"/>
+  </dmn:inputData>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_7A995E4A-CF0A-46F2-8C07-79E1ADB53892">
+            <kie:width>50.0</kie:width>
+            <kie:width>185.0</kie:width>
+            <kie:width>170.0</kie:width>
+            <kie:width>436.0</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="dmnshape-_5C432F96-0204-4B47-828A-60E6A42F56FA" dmnElementRef="_5C432F96-0204-4B47-828A-60E6A42F56FA" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="304" y="83" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-_B3B1C2E3-F0BC-4088-B7D5-3AA484D57383" dmnElementRef="_B3B1C2E3-F0BC-4088-B7D5-3AA484D57383" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="255" green="255" blue="255"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="215" y="207" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="dmnedge-_663881F6-74AE-4EBC-9135-323C91866211" dmnElementRef="_663881F6-74AE-4EBC-9135-323C91866211">
+        <di:waypoint x="265" y="207"/>
+        <di:waypoint x="354" y="133"/>
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>

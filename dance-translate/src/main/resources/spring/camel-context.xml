@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring.xsd">
+    <bean class="com.redhat.bfarr.dance.DanceMoveData" id="dancemovedata"/>
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <dataFormats>
+            <json id="serializer" library="Jackson"/>
+        </dataFormats>
+        <restConfiguration bindingMode="auto" contextPath="/camel"
+            enableCORS="true" port="8080">
+            <apiProperty key="cors" value="true"/>
+            <apiProperty key="api.title" value="Dance Service"/>
+            <apiProperty key="api.version" value="1.0.0"/>
+        </restConfiguration>
+        <rest enableCORS="true"
+            id="rest-1145a5ec-d46f-43da-a74a-63aa25327cc2" path="/move">
+            <post consumes="application/json"
+                id="post-00bb2d77-8d31-41d7-a978-1b9129d587bb" uri="/{direction}">
+                <to uri="direct:httpprocessingRoute"/>
+            </post>
+        </rest>
+        
+        <route id="httpprocessingRoute">
+            <from id="_from1" uri="direct:httpprocessingRoute"/>
+            <to uri="seda:processingRoute?waitForTaskToComplete=Never"/>
+             <setHeader headerName="Access-Control-Allow-Methods" id="_setHeader5">
+                <constant>POST, GET, OPTIONS</constant>
+            </setHeader>
+            <setHeader headerName="Access-Control-Allow-Origin" id="_setHeader6">
+                <constant>*</constant>
+            </setHeader>
+            <setHeader headerName="Access-Control-Allow-Headers" id="_setHeader7">
+                <constant>x-requested-with</constant>
+            </setHeader>
+            <transform id="_transform1">
+                <constant>OK</constant>
+            </transform>
+        </route>
+        
+        <route id="processingRoute">
+            <from id="_from1" uri="seda:processingRoute"/>
+            <to id="_to1" uri="bean:dancemovedata?method=getMoves(${header.direction},${headers})"/>
+            <log id="_log1" message=" ${body}"/>
+            <split id="jsonArray">
+                <jsonpath>$.*</jsonpath>
+                <choice id="_choice1">
+                    <when id="_when1">
+                        <jsonpath suppressExceptions="true">delay</jsonpath>
+                        <delay id="_delay1">
+                            <simple>${header.P_DELAY}</simple>
+                        </delay>
+                    </when>
+                    <otherwise id="_otherwise1">
+                        <marshal id="_marshal1" ref="serializer"/>
+                        <log id="_log2" message=" ${body}"/>
+                        <setHeader headerName="CamelHttpMethod" id="_setHeader1">
+                            <constant>POST</constant>
+                        </setHeader>
+                        <setHeader headerName="Exchange.HTTP_PATH" id="_setHeader2">
+                            <constant>/</constant>
+                        </setHeader>
+                        <setHeader headerName="Exchange.HTTP_QUERY" id="_setHeader3">
+                            <simple>user_key=ac2cab8ec667f6e444a49c95c31fd51e</simple>
+                        </setHeader>
+                        <setHeader headerName="Exchange.CONTENT_TYPE" id="_setHeader4">
+                            <constant>application/json</constant>
+                        </setHeader>
+                        <to id="_to2" uri="http4://robots-3scale.apps.intgr8ly-f9af.open.redhat.com:80/command?bridgeEndpoint=true"/>
+                       
+                    </otherwise>
+                </choice>
+            </split>
+        </route>
+        <route id="SedaRoute0">
+            <from id="_from0" uri="file:sequences?noop=true"/>
+            <bean id="_bean0"
+                method="setValue(${header.CamelFileNameOnly}, ${body})" ref="dancemovedata"/>
+        </route>
+    </camelContext>
+</beans>

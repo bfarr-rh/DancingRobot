@@ -1,0 +1,131 @@
+html, body {
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0;
+    background-color:#dfe9fc;
+}
+.table {
+    display:table;
+    border:0px solid #000;
+    float:left;
+    justify-content: center;
+}
+.row {
+    display:table-row;
+    align-content:center;
+}
+.cell1, .cell2, .cell3 {
+    display:table-cell;
+    border:0px solid #CCC;
+    justify-content: center;
+    padding:0px;
+    margin:0px;
+    vertical-align: center;
+}
+.cell1:hover, .cell2:hover, .cell3:hover {
+    background-color: lightskyblue;
+}
+
+.spinrightbtn:hover {
+    background-color: rgb(247, 129, 129);
+}
+.spinrightbtn {
+    background-color: red;
+    width:150px;
+    height:80px;
+    color:white;
+    font-size: 25px;
+    text-align: center;
+    padding: 10px;
+    margin: auto;
+    align-self:center;
+}
+.spinleftbtn:hover {
+    background-color: lightgreen;
+}
+.spinleftbtn {
+    background-color: green;
+    width:150px;
+    height:80px;
+    color:white;
+    font-size: 25px;
+    text-align: center;
+    padding: 10px;
+    margin: auto;
+    align-self:center;
+}
+
+.trainbtn {
+    font-size: 25px;
+    text-align: center;
+    margin: 0;
+}
+.trainbtn:disabled {
+    background: #dddddd;
+}
+
+.lbl {
+    font-size: 25px;
+}
+.arrow {
+    width:120px;
+    height:90px;
+}
+.arrow-vert {
+    width:90px;
+    height:120px;
+}
+.switch-wrapper {
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    margin-left:60px;
+    float:right;
+  }
+
+  .ui-widget-header,.ui-state-default, ui-button {
+    background: #ef2929;
+    border: 1px solid  #ef2929;
+    color: #FFFFFF;
+    font-weight: bold;
+ }
+
+ #speed_slider {
+     float:right;
+    width: 270px;
+    display: inline-block;
+    position: relative;
+    margin-top:10px;
+  }
+  #turnspeed_slider {
+    float:right;
+    width: 270px;
+    display: inline-block;
+    position: relative;
+    margin-top:10px;
+  }
+  #samplerate_slider {
+    float:right;
+    width: 270px;
+    display: inline-block;
+    position: relative;
+    margin-top:10px;
+  }
+  #movedelay_slider {
+    float:right;
+    width: 270px;
+    display: inline-block;
+    position: relative;
+    margin-top:10px;
+  }
+
+
+  #speed_slider .ui-slider-range { background: #729fcf; }
+  #speed_slider .ui-slider-handle { border-color: #729fcf; }
+  #turnspeed_slider .ui-slider-range { background: #729fcf; }
+  #turnspeed_slider .ui-slider-handle { border-color: #729fcf; }
+  #samplerate_slider .ui-slider-range { background: #729fcf; }
+  #samplerate_slider .ui-slider-handle { border-color: #729fcf; }
+  #movedelay_slider .ui-slider-range { background: #729fcf; }
+  #movedelay_slider .ui-slider-handle { border-color: #729fcf; }
