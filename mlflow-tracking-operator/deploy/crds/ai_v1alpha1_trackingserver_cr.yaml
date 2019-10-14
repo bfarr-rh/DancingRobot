@@ -4,5 +4,5 @@ metadata:
   name: zak-tracking-server
 spec:
   # Add fields here
-  size: 2
+  size: 1
   Image: "quay.io/zmhassan/mlflow:0.8.2"
