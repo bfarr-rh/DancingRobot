@@ -82,7 +82,9 @@ oc new-app dance-translate
 oc logs -f bc/dance-translate
 oc expose svc/dance-translate
 
-
+# in 4.2 the above did not work due to image tag not recognised, using this below in the mean time
 #oc new-app registry.redhat.io/fuse7/fuse-java-openshift~https://github.com/bfarr-rh/DancingRobot.git#master --context-dir=dance-translate --name=dance-translate
+#oc rsync dance-translate/sequences dance-translate-1-c5g8w:/deployments/
+
 
 
