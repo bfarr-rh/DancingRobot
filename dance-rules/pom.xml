@@ -194,4 +194,17 @@
       </build>
     </profile>
   </profiles>
+  <repositories>
+    <repository>
+      <id>my-repo1</id>
+      <name>your custom repo</name>
+      <url>https://maven.repository.redhat.com/earlyaccess/all</url>
+    </repository>
+    <repository>
+      <id>my-repo2</id>
+      <name>your custom repo</name>
+      <url>http://maven.repository.redhat.com/techpreview/all</url>
+    </repository>
+  </repositories>
+
 </project>
