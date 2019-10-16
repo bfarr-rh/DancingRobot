@@ -23,6 +23,8 @@ oc create -f mlflow-tracking-operator/deploy/crds/ai_v1alpha1_trackingserver_cr.
 ###############################################################
 # Install the Rules in Java (and Quarkus for comparison
 
+oc import-image openjdk/openjdk-11-rhel8 --from=registry.redhat.io/openjdk/openjdk-11-rhel8 --confirm
+
 # To build the image on OpenShift
 #oc new-app quay.io/quarkus/ubi-quarkus-native-s2i:19.2.0.1~https://github.com/bfarr-rh/DancingRobot.git#master --context-dir=dance-rules --name=dance-rules-native
 #oc logs -f bc/dance-rules-native
@@ -85,6 +87,10 @@ oc expose svc/dance-translate
 # in 4.2 the above did not work due to image tag not recognised, using this below in the mean time
 #oc new-app registry.redhat.io/fuse7/fuse-java-openshift~https://github.com/bfarr-rh/DancingRobot.git#master --context-dir=dance-translate --name=dance-translate
 #oc rsync dance-translate/sequences dance-translate-1-c5g8w:/deployments/
+
+ oc new-build --name=dance-translate  registry.redhat.io/openjdk/openjdk-11-rhel8 --binary=true
+ 1934  oc start-build dance-translate --from-dir=./dance-translate/target
+
 
 
 

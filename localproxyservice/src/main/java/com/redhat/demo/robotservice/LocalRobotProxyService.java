@@ -19,11 +19,10 @@ import com.redhat.demo.robotservice.rest.Listener;
 import com.redhat.demo.robotservice.rest.RobotEndPoint;
 import java.io.IOException;
 import java.net.URI;
-
-//import org.apache.http.HttpResponse;
-//import org.apache.http.client.methods.HttpPost;
-//import org.apache.http.entity.StringEntity;
-//import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.eclipse.microprofile.rest.client.RestClientBuilder;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
@@ -37,16 +36,13 @@ public class LocalRobotProxyService {
         private static final long serialVersionUID = 1L;
 
         {
-            put("LEADER", "http://192.168.99.104/rpc/Robot.Cmd");
-            put("FOLLOWER", "http://192.168.99.105/rpc/Robot.Cmd");
-            put("DM_ROBOT", "http://192.168.99.103/rpc/Robot.Cmd");
-            put("DANCE_ROBOT", "http://192.168.99.106/rpc/Robot.Cmd");
-            put("OPENSHIFT", "http://192.168.99.104/rpc/Robot.Cmd");
-            put("BUILDAH", "http://192.168.99.105/rpc/Robot.Cmd");
-            put("PODMAN", "http://192.168.99.103/rpc/Robot.Cmd");
-            put("CRI-O", "http://92.168.99.106/rpc/Robot.Cmd");
-            put("TEST", "http://localhost:8080/rpc/Robot.Cmd");
-           
+            put("DM_ROBOT", "http://192.168.0.11/rpc/Robot.Cmd");
+put("DANCE_ROBOT", "http://192.168.0.10/rpc/Robot.Cmd");
+put("OPENSHIFT", "http://192.168.0.12/rpc/Robot.Cmd");
+put("BUILDAH", "http://192.168.0.13/rpc/Robot.Cmd");
+put("PODMAN", "http://192.168.0.11/rpc/Robot.Cmd");
+put("CRI-O", "http://192.168.0.10/rpc/Robot.Cmd");
+
         }
     };
 
@@ -65,8 +61,8 @@ public class LocalRobotProxyService {
         cmd.setCmd(commandToSend);
         URI apiUrl = new URI(baseURL);
    
-        //sendToRobot(baseURL, commandToSend);
-        
+        sendToRobot(baseURL, commandToSend);
+        /*
         robotEndPoint = RestClientBuilder.newBuilder()
             .baseUri(apiUrl)
             .register(Listener.class)
@@ -76,7 +72,7 @@ public class LocalRobotProxyService {
         
             
         robotEndPoint.sendCommand(cmd);
-        
+        */
         } catch (Exception e1) {
             e1.printStackTrace();
         }
@@ -94,7 +90,7 @@ public class LocalRobotProxyService {
         return "";
     }
 
-    /*
+    
     public static void sendToRobot(String apiUrl, String cmd) throws IOException {
 		System.out.println("Robot command: " + cmd);
 		DefaultHttpClient httpClient = new DefaultHttpClient();
@@ -111,5 +107,5 @@ public class LocalRobotProxyService {
 			   + response.getStatusLine().getStatusCode());
 		}
 	}
-    */
+    
 }

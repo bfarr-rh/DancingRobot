@@ -59,13 +59,15 @@
                         <setHeader headerName="Exchange.HTTP_PATH" id="_setHeader2">
                             <constant>/</constant>
                         </setHeader>
+                        <!--
                         <setHeader headerName="Exchange.HTTP_QUERY" id="_setHeader3">
                             <simple>user_key=ac2cab8ec667f6e444a49c95c31fd51e</simple>
                         </setHeader>
+                        -->
                         <setHeader headerName="Exchange.CONTENT_TYPE" id="_setHeader4">
                             <constant>application/json</constant>
                         </setHeader>
-                        <to id="_to2" uri="http4://robots-3scale.apps.intgr8ly-f9af.open.redhat.com:80/command?bridgeEndpoint=true"/>
+                        <to id="_to2" uri="http4://rhdemo.au.ngrok.io/command?bridgeEndpoint=true"/>
                        
                     </otherwise>
                 </choice>
